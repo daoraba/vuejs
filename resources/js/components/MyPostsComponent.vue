@@ -2,12 +2,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form-component></form-component>
+                <form-component @new="addPost"></form-component>
 
                 <post-component
-                        v-for="post in posts"
+                        v-for="(post, index) in posts"
                         :key="post.id"
-                        :post="post">
+                        :post="post"
+                        @update="updatePost(index, ...arguments)"
+                        @delete="deletePost(index)">
                 </post-component>
             </div>
 
@@ -29,6 +31,18 @@
 
         mounted() {
             console.log('Component mounted.')
+        },
+
+        methods: {
+            addPost(post) {
+                this.posts.push(post);
+            },
+            updatePost(index, post){
+                this.posts[index] = post;
+            },
+            deletePost(index){
+                this.posts.splice(index, 1);
+            }
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header">Test Vuejs + Laravel</div>
+        <div class="card-header">Add your new Post</div>
 
         <div class="card-body">
 
@@ -31,7 +31,13 @@
         },
         methods: {
             newPost() {
-                alert(this.description);
+                let post = {
+                    id: 2,
+                    description: this.description,
+                    created_at: '11/22/3333'
+                };
+                this.$emit('new', post);
+                this.description = '';
             }
         }
     }

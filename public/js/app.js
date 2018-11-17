@@ -47371,20 +47371,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['post'],
     data: function data() {
         return {
-            post: {
-                id: '',
-                description: '',
-                created_at: ''
-            }
+            editMode: false
         };
     },
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+
+    methods: {
+        onClickDelete: function onClickDelete() {
+            this.$emit('delete');
+        },
+        onClickEdit: function onClickEdit() {
+            this.editMode = true;
+        },
+        onClickUpdate: function onClickUpdate() {
+            this.editMode = false;
+            this.$emit('update', post);
+        }
     }
 });
 
@@ -47402,24 +47425,74 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _vm._v(_vm._s(_vm.post.description))
+      _vm.editMode
+        ? _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.post.description,
+                expression: "post.description"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.post.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.post, "description", $event.target.value)
+              }
+            }
+          })
+        : _c("p", [_vm._v(_vm._s(_vm.post.description))])
     ]),
     _vm._v(" "),
-    _vm._m(0)
+    _c("div", { staticClass: "card-footer" }, [
+      _vm.editMode
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-success",
+              on: {
+                click: function($event) {
+                  _vm.onClickUpdate()
+                }
+              }
+            },
+            [_vm._v("\n            Save changes\n        ")]
+          )
+        : _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              on: {
+                click: function($event) {
+                  _vm.onClickEdit()
+                }
+              }
+            },
+            [_vm._v("\n            Edit\n        ")]
+          ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          on: {
+            click: function($event) {
+              _vm.onClickDelete()
+            }
+          }
+        },
+        [_vm._v("\n            Delete\n        ")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c("button", { staticClass: "btn btn-default" }, [_vm._v("Edit")]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Delete")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47526,7 +47599,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         newPost: function newPost() {
-            alert(this.description);
+            var post = {
+                id: 2,
+                description: this.description,
+                created_at: '11/22/3333'
+            };
+            this.$emit('new', post);
+            this.description = '';
         }
     }
 });
@@ -47540,7 +47619,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [_vm._v("Test Vuejs + Laravel")]),
+    _c("div", { staticClass: "card-header" }, [_vm._v("Add your new Post")]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
       _c(
@@ -47671,6 +47750,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47684,6 +47765,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+
+
+    methods: {
+        addPost: function addPost(post) {
+            this.posts.push(post);
+        },
+        updatePost: function updatePost(index, post) {
+            this.posts[index] = post;
+        },
+        deletePost: function deletePost(index) {
+            this.posts.splice(index, 1);
+        }
     }
 });
 
@@ -47701,10 +47795,24 @@ var render = function() {
         "div",
         { staticClass: "col-md-8" },
         [
-          _c("form-component"),
+          _c("form-component", { on: { new: _vm.addPost } }),
           _vm._v(" "),
-          _vm._l(_vm.posts, function(post) {
-            return _c("post-component", { key: post.id, attrs: { post: post } })
+          _vm._l(_vm.posts, function(post, index) {
+            return _c("post-component", {
+              key: post.id,
+              attrs: { post: post },
+              on: {
+                update: function($event) {
+                  var i = arguments.length,
+                    argsArray = Array(i)
+                  while (i--) argsArray[i] = arguments[i]
+                  _vm.updatePost.apply(void 0, [index].concat(argsArray))
+                },
+                delete: function($event) {
+                  _vm.deletePost(index)
+                }
+              }
+            })
           })
         ],
         2
