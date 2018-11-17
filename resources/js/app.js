@@ -17,6 +17,7 @@ window.Vue = require('vue');
  * Eg. ./components/PostComponent.vue -> <example-component></example-component>
  */
 
+Vue.component('my-posts-component', require('./components/MyPostsComponent.vue'));
 Vue.component('form-component', require('./components/FormComponent.vue'));
 Vue.component('post-component', require('./components/PostComponent.vue'));
 

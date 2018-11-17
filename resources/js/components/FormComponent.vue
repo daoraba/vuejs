@@ -3,16 +3,12 @@
         <div class="card-header">Test Vuejs + Laravel</div>
 
         <div class="card-body">
-            <!--@if (session('status'))-->
-            <!--<div class="alert alert-success" role="alert">-->
-                <!--{{ session('status') }}-->
-            <!--</div>-->
-            <!--@endif-->
 
-            <form action="">
+            <form action="" v-on:submit.prevent="newPost()">
                 <div class="form-group">
                     <label for="field">type text:</label>
-                    <input type="text" class="form-control" name="field">
+                    <input type="text" class="form-control" name="field"
+                    v-model="description">
                 </div>
                 <button type="submit" class="btn btn-primary">
                     Send Post
@@ -25,8 +21,18 @@
 
 <script>
     export default {
+        data(){
+            return {
+                description:''
+            }
+        },
         mounted() {
             console.log('Component mounted.')
+        },
+        methods: {
+            newPost() {
+                alert(this.description);
+            }
         }
     }
 </script>
