@@ -14,10 +14,11 @@ window.Vue = require('vue');
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Eg. ./components/PostComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('form-component', require('./components/FormComponent.vue'));
+Vue.component('post-component', require('./components/PostComponent.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 
