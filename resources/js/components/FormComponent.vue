@@ -6,7 +6,7 @@
 
             <form action="" v-on:submit.prevent="newPost()">
                 <div class="form-group">
-                    <label for="field">type text:</label>
+                    <label>type text:</label>
                     <input type="text" class="form-control" name="field"
                     v-model="description">
                 </div>
@@ -30,14 +30,18 @@
             console.log('Component mounted.')
         },
         methods: {
-            newPost() {
-                let post = {
-                    id: 2,
-                    description: this.description,
-                    created_at: '11/22/3333'
-                };
-                this.$emit('new', post);
-                this.description = '';
+                newPost(){
+
+                    const params = {
+                        description: this.description
+                    };
+                    this.description = '';
+                    axios.post('/posts', params)
+                        .then((response) => {
+                            const post = response.data;
+                            this.$emit('new', post);
+                        });
+
             }
         }
     }

@@ -21,16 +21,14 @@
     export default {
         data () {
             return{
-                posts: [{
-                    'id': 1,
-                    'description': 'abc',
-                    'created_at' : '17/11/2018'
-                }]
+                posts: []
             }
         },
 
         mounted() {
-            console.log('Component mounted.')
+            axios.get('/posts').then((response) =>{
+                this.posts = response.data;
+            });
         },
 
         methods: {

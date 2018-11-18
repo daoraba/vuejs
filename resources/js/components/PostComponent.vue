@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header">Posted {{post.created_at}}</div>
+        <div class="card-header">Posted: {{post.created_at}} - Last updated: {{post.updated_at}}</div>
         
         <div class="card-body">
 
@@ -36,14 +36,22 @@
         },
         methods: {
             onClickDelete(){
-                this.$emit('delete');
+                axios.delete(`/posts/${this.post.id}`).then(() => {
+                    this.$emit('delete');
+                });
             },
             onClickEdit(){
                 this.editMode = true;
             },
             onClickUpdate(){
-                this.editMode = false;
-                this.$emit('update', post)
+                const params = {
+                    description: this.post.description
+                };
+                axios.put(`/posts/${this.post.id}`, params).then((response) =>{
+                    this.editMode = false;
+                    const post = response.data;
+                    this.$emit('update', post)
+                });
             }
         }
     }
